@@ -151,6 +151,7 @@ pub fn (mut app App) index() veb.Result {
 	if no_users {
 		return ctx.redirect('/register')
 	}
+	$dbg;
 
 	return $veb.html()
 }
