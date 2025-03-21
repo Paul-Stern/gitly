@@ -392,13 +392,16 @@ pub fn (mut app App) auth_user(mut ctx Context, user User, ip string) ! {
 }
 
 pub fn (mut app App) is_logged_in(mut ctx Context) bool {
+	$dbg;
 	token_cookie := ctx.get_cookie('token') or { return false }
 	token := app.get_token(token_cookie) or { return false }
 	is_user_blocked := app.check_user_blocked(token.user_id)
+	$dbg;
 	if is_user_blocked {
 		app.handle_logout(mut ctx)
 		return false
 	}
+	$dbg;
 	return true
 }
 

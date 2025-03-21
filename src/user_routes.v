@@ -22,6 +22,7 @@ pub fn (mut app App) login(mut ctx Context) veb.Result {
 
 @['/login'; post]
 pub fn (mut app App) handle_login(mut ctx Context, username string, password string) veb.Result {
+	$dbg;
 	if username == '' || password == '' {
 		return ctx.redirect_to_login()
 	}
@@ -49,7 +50,9 @@ pub fn (mut app App) handle_login(mut ctx Context, username string, password str
 		return app.login(mut ctx)
 	}
 	app.add_security_log(user_id: user.id, kind: .logged_in) or { app.info(err.str()) }
+	$dbg;
 	return ctx.redirect('/${username}')
+	// return app.login(mut ctx)
 }
 
 @['/logout']
