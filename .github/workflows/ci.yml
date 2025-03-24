@@ -173,10 +173,6 @@ jobs:
           cd thirdparty\libgit2\build
           cmake ..
           cmake --build .
-          cp .\Debug\git2.dll D:\a\gitly\gitly\
-          cp .\Debug\git2.exe D:\a\gitly\gitly
-          dir
-          cd ..\..\..
           dir
       - name: Install SQLite
         run: |
@@ -198,7 +194,7 @@ jobs:
       - name: Compile gitly
         run: |
           dir
-          .\v.exe -cflags "-L." -cflags "-Igitly/libgit2/include" -cflags "-Igitly/libgit2" -cc gcc  gitly
+          .\v.exe -cflags "-Lthirdparty/libgit2/build/Debug" -cflags "-Ithirdpary/libgit2/include" -cc gcc  gitly
 
   ubuntu-tcc:
     runs-on: ubuntu-latest
