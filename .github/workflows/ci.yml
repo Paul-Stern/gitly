@@ -194,7 +194,7 @@ jobs:
       - name: Compile gitly
         run: |
           dir
-          .\v.exe -cflags "-Lthirdparty/libgit2/build/Debug" -cflags "-Ithirdparty/libgit2/build/include/git2" -cflags "-Ithirdpary/libgit2/build/include" -cc gcc gitly
+          .\v.exe -cflags "-Lthirdparty/libgit2/build/Debug" -cflags "-Ithirdparty/libgit2/build/include/git2" -cflags "-Ithirdparty/libgit2/build/include" -cc gcc gitly
 
   ubuntu-tcc:
     runs-on: ubuntu-latest
