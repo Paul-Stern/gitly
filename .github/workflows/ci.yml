@@ -150,7 +150,7 @@ jobs:
 #          .\v.exe gitly\
 
   windows-gcc:
-    runs-on: windows-latest
+    runs-on: self-hosted
     env:
       VFLAGS: -cc gcc
     steps:
@@ -188,7 +188,6 @@ jobs:
           cp .\Debug\git2.dll D:\a\gitly\gitly\
           cp .\Debug\git2.dll D:\a\gitly\gitly\gitly
           cp .\Debug\git2.exe D:\a\gitly\gitly
-          dir
           dir
           cd ..\..\..
           dir
