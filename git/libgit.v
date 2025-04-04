@@ -81,6 +81,7 @@ fn C.git_commit_tree(voidptr, &C.git_commit)
 fn C.git_tree_entrycount(&C.git_tree) int
 fn C.git_tree_entry_byindex(&C.git_tree, int) &C.git_tree_entry
 fn C.git_tree_entry_name(&C.git_tree_entry) &char
+fn C.git_tree_entry_type(&C.git_tree_entry) int
 fn C.git_blob_lookup(&&C.git_blob, &C.git_repository, &C.git_oid) int
 fn C.git_tree_entry_id(&C.git_tree_entry) &C.git_oid
 fn C.git_blob_rawcontent(&C.git_blob) voidptr
@@ -243,6 +244,13 @@ pub fn (r &Repo) show_file_blob(branch string, file_path string) !string {
 		return error('sdf')
 	}
 
+	mut parts := []string{}
+	// check if filepath contains directory
+	if file_path.contains('/') {
+		// split file path into directories and filename
+		parts = file_path.split('/')
+
+	}
 	tree := unsafe { &C.git_tree(treeish) }
 
 	// Iterate through the tree entries to find the file
@@ -251,7 +259,19 @@ pub fn (r &Repo) show_file_blob(branch string, file_path string) !string {
 	for i := 0; i < entry_count; i++ {
 		entry := C.git_tree_entry_byindex(tree, i)
 		entry_name := C.git_tree_entry_name(entry)
-		C.printf(c'%s\n', entry_name)
+		C.printf(c'show_file_blob() entry_name: %s\n', entry_name)
+
+		// check if parts is not empty
+		if parts != []string{} &&  parts.len > 0 {
+			// check if entry_name is equal to first part of parts
+			if unsafe { C.strcmp(entry_name, parts[0].str) } != 0 {
+				// join parts into a new path
+				// new_path := parts.join('/')
+				new_path := parts[1..].join('/')
+
+				return r.show_file_blob(branch, new_path)
+			}
+		}
 
 		if unsafe { C.strcmp(entry_name, file_path.str) } == 0 {
 			// Found the file
@@ -269,7 +289,7 @@ pub fn (r &Repo) show_file_blob(branch string, file_path string) !string {
 			text := unsafe { cstring_to_vstring(content) }
 			C.git_blob_free(blob)
 			return text
-		}
+		} 
 	}
 	return ''
 }
